@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0f766e" />
+  <title>Admin — Pemilu Ekskul</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="admin-body">
+
+  <!-- ============ LOGIN ADMIN ============ -->
+  <section id="login-admin" class="admin-login">
+    <div class="admin-card">
+      <div class="login-head">
+        <span class="eyebrow">Panel Kontrol</span>
+        <h1 class="display">Admin <em>Login</em></h1>
+        <p class="subtitle">Masukkan kunci rahasia untuk mengakses dashboard.</p>
+      </div>
+
+      <label class="field">
+        <input type="password" id="input-key" placeholder=" " autocomplete="off" />
+        <span>Kunci Rahasia</span>
+      </label>
+
+      <button id="btn-login-admin" class="btn btn-primary btn-block">Buka Dashboard</button>
+      <p id="error-key" class="error-msg hidden" role="alert"></p>
+
+      <div class="login-foot">
+        <span class="rule"></span>
+        <a href="index.html" class="link-back">Halaman Voting</a>
+        <span class="rule"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ DASHBOARD ============ -->
+  <section id="dashboard-admin" class="dashboard hidden">
+    <header class="admin-header">
+      <div>
+        <span class="eyebrow">Panel Kontrol</span>
+        <h1 class="display">Dashboard <em>Pemilu</em></h1>
+      </div>
+      <button id="btn-logout-admin" class="btn btn-ghost">Logout</button>
+    </header>
+
+    <div class="stat-grid">
+      <div class="stat-card">
+        <span class="stat-label">Total Suara</span>
+        <span class="stat-value" id="total-suara">0</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Jumlah Paslon</span>
+        <span class="stat-value" id="total-paslon">0</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Status</span>
+        <span class="stat-value live"><span class="dot"></span> Live</span>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <h3 class="chart-title">Perolehan Suara Sementara</h3>
+      <div class="chart-container">
+        <canvas id="voteChart"></canvas>
+      </div>
+      <div id="vote-summary" class="vote-summary"></div>
+    </div>
+  </section>
+
+  <script type="module" src="js/admin.js"></script>
+  <script type="module" src="js/ui.js"></script>
+</body>
+</html>

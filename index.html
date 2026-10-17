@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0f766e" />
+  <title>Pemilu Ekskul Komputer 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ============ NAVBAR ============ -->
+  <header class="navbar" id="navbar">
+    <div class="navbar-inner">
+      <a href="index.html" class="brand">
+        <img id="nav-logo" src="assets/logo.png" alt="Logo" class="brand-logo" />
+        <span id="nav-title" class="brand-name">Pemilu Ekskul</span>
+      </a>
+      <div id="profile-chip" class="profile-chip hidden">
+        <span class="profile-avatar" id="profile-avatar">?</span>
+        <span class="profile-name" id="profile-name">User</span>
+        <button class="profile-close" id="nav-logout" aria-label="Keluar">×</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+
+    <!-- ============ VIEW: LOGIN ============ -->
+    <section id="login-view" class="view">
+      <div class="login-wrap">
+        <div class="login-head">
+          <span class="eyebrow">Pemilihan 2026</span>
+          <h1 class="display">Pemilu Ekskul <em>Komputer</em></h1>
+          <p class="subtitle">Ketua &amp; Wakil Ketua · Periode 2026/2027</p>
+        </div>
+
+        <form id="login-form" class="form" novalidate>
+          <label class="field">
+            <input type="text" id="input-nama" placeholder=" " autocomplete="off" required />
+            <span>Nama Lengkap &amp; Kelas</span>
+          </label>
+
+          <label class="field">
+            <input type="text" id="input-token" placeholder=" " autocomplete="off" spellcheck="false" required />
+            <span>Token Pemilihan</span>
+          </label>
+
+          <button type="submit" id="btn-login" class="btn btn-primary btn-block">
+            Masuk &amp; Mulai Vote
+          </button>
+
+          <p id="login-error" class="error-msg hidden" role="alert"></p>
+        </form>
+
+        <div class="login-foot">
+          <span class="rule"></span>
+          <small>Token diberikan oleh panitia</small>
+          <span class="rule"></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ VIEW: VOTING ============ -->
+    <section id="vote-view" class="view hidden">
+      <header class="vote-header">
+        <span class="eyebrow">Halaman Voting</span>
+        <h2 class="display">Pilih <em>pemimpinmu</em>.</h2>
+        <p class="subtitle">Satu suara. Satu arah baru untuk ekskul komputer.</p>
+      </header>
+
+      <div class="carousel" id="carousel">
+        <button class="carousel-btn carousel-prev" id="carousel-prev" aria-label="Sebelumnya">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+
+        <div class="carousel-track" id="candidate-grid"><!-- diisi voter.js --></div>
+
+        <button class="carousel-btn carousel-next" id="carousel-next" aria-label="Berikutnya">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+
+      <div class="carousel-dots" id="carousel-dots"><!-- diisi ui.js --></div>
+
+      <div class="vote-footer">
+        <button id="btn-logout" class="btn btn-ghost">Keluar / Ganti Akun</button>
+      </div>
+    </section>
+
+    <!-- ============ VIEW: SUKSES ============ -->
+    <section id="success-view" class="view hidden">
+      <div class="success-card">
+        <div class="success-icon" aria-hidden="true">
+          <svg viewBox="0 0 52 52">
+            <circle cx="26" cy="26" r="23" />
+            <path d="M14 27 L23 36 L39 18" />
+          </svg>
+        </div>
+        <span class="eyebrow">Suara Tercatat</span>
+        <h2 class="display">Terima <em>kasih</em>.</h2>
+        <p class="subtitle">Suaramu untuk <strong id="success-paslon">Paslon</strong> sudah tercatat.</p>
+        <p class="muted">Token kamu telah ditandai terpakai.</p>
+        <button id="btn-finish" class="btn btn-primary btn-block">Selesai</button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============ MODAL DETAIL ============ -->
+  <div id="candidate-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal">
+      <button class="modal-close" id="modal-close" aria-label="Tutup">×</button>
+      <div class="modal-body" id="modal-body"></div>
+    </div>
+  </div>
+
+  <div class="confetti-layer" id="confetti-layer" aria-hidden="true"></div>
+
+  <footer class="site-footer" id="site-footer">© 2026 Ekskul Komputer</footer>
+
+  <script type="module" src="js/voter.js"></script>
+  <script type="module" src="js/ui.js"></script>
+</body>
+</html>
