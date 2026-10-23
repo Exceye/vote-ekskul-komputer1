@@ -33,6 +33,28 @@ const modalBody    = $("modal-body");
 const modalClose   = $("modal-close");
 const successPaslon= $("success-paslon");
 const btnFinish    = $("btn-finish");
+const alreadyVotedView = $("already-voted-view");
+
+// ---------- Penanda "perangkat ini sudah vote" (Browser Storage) ----------
+// Ganti angka tahun jika nanti ada pemilihan baru, supaya penanda lama tidak berlaku.
+const VOTED_KEY = "ekskul2026_sudah_vote";
+
+function hasVotedOnDevice() {
+  try { return localStorage.getItem(VOTED_KEY) === "1"; }
+  catch (e) { return false; } // storage diblokir -> anggap belum vote
+}
+function markVotedOnDevice() {
+  try { localStorage.setItem(VOTED_KEY, "1"); } catch (e) { /* abaikan */ }
+}
+function showAlreadyVoted() {
+  sessionStorage.removeItem("tokenId");
+  sessionStorage.removeItem("voterName");
+  hideProfile();
+  hide(loginView);
+  hide(voteView);
+  hide(successView);
+  show(alreadyVotedView);
+}
 
 // ---------- Inisialisasi Site ----------
 $("nav-title").textContent = SITE.title;
@@ -159,6 +181,13 @@ document.addEventListener("keydown", (e) => {
 
 // ---------- Aksi vote ----------
 async function submitVote(paslonId) {
+  // Cek penanda perangkat (misal vote sudah dilakukan di tab lain)
+  if (hasVotedOnDevice()) {
+    closeModal();
+    showAlreadyVoted();
+    return;
+  }
+
   const tokenId = sessionStorage.getItem("tokenId");
   const voterName = sessionStorage.getItem("voterName");
 
@@ -185,6 +214,9 @@ async function submitVote(paslonId) {
       waktu: serverTimestamp(),
     });
 
+    // Tandai perangkat ini sudah vote (langsung setelah suara tersimpan)
+    markVotedOnDevice();
+
     // 2. Tandai token terpakai
     await updateDoc(doc(db, FIREBASE.tokensCollection, tokenId), {
       [FIREBASE.tokenFields.used]: true,
@@ -204,6 +236,12 @@ async function submitVote(paslonId) {
     hideProfile();
   } catch (err) {
     console.error("Gagal vote:", err);
+    // Jika suara sudah tersimpan tapi langkah berikutnya gagal, jangan izinkan vote ulang
+    if (hasVotedOnDevice()) {
+      closeModal();
+      showAlreadyVoted();
+      return;
+    }
     alert("Gagal mengirim suara. Periksa koneksi internet lalu coba lagi.");
     document.querySelectorAll(".btn-vote-modal, .btn-detail").forEach((b) => (b.disabled = false));
   }
@@ -226,6 +264,11 @@ modalBody.addEventListener("click", (e) => {
 loginForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   clearLoginError();
+
+  if (hasVotedOnDevice()) {
+    showAlreadyVoted();
+    return;
+  }
 
   const nama = inputNama.value.trim();
   const token = inputToken.value.trim();
@@ -297,6 +340,10 @@ btnFinish.addEventListener("click", () => window.location.reload());
 
 // ---------- Restore sesi saat refresh ----------
 (function restoreSession() {
+  if (hasVotedOnDevice()) {
+    showAlreadyVoted();
+    return;
+  }
   const name = sessionStorage.getItem("voterName");
   const tokenId = sessionStorage.getItem("tokenId");
   if (name && tokenId) {
